@@ -3,13 +3,15 @@ package asciibox
 import (
 	"strings"
 
-	"github.com/boundedinfinity/collection_util"
+	"github.com/boundedinfinity/asciibox/alignment_type"
+	"github.com/boundedinfinity/asciibox/comment_type"
+	"github.com/boundedinfinity/commons/slices"
 )
 
 var (
-	commentTypeMap = map[CommentType]string{
-		CommentType_DoubleBackslash: "//",
-		CommentType_Pound:           "#",
+	commentTypeMap = map[comment_type.CommentType]string{
+		comment_type.DoubleBackslash: "//",
+		comment_type.Pound:           "#",
 	}
 )
 
@@ -28,7 +30,7 @@ func processContext(ms []string, options BoxOptions) boxContext {
 
 	for _, m := range ms {
 		ss := splitAfterNCharacters(m, coptions.BoxWidth)
-		ss = collection_util.Map(ss, func(v string) string { return strings.Trim(v, " ") })
+		ss = slices.Map(ss, func(v string) string { return strings.Trim(v, " ") })
 		cms = append(cms, ss...)
 	}
 
@@ -115,7 +117,7 @@ func suffix(ctx boxContext, withPad bool) string {
 	return b.String()
 }
 
-func orElseAlignment(v, d Alignment) Alignment {
+func orElseAlignment(v, d alignment_type.Alignment) alignment_type.Alignment {
 	if string(v) != "" {
 		return v
 	} else {
@@ -123,7 +125,7 @@ func orElseAlignment(v, d Alignment) Alignment {
 	}
 }
 
-func orElseCommentType(v, d CommentType) CommentType {
+func orElseCommentType(v, d comment_type.CommentType) comment_type.CommentType {
 	if string(v) != "" {
 		return v
 	} else {

@@ -1,11 +1,16 @@
 package asciibox
 
-import "strings"
+import (
+	"strings"
+
+	"github.com/boundedinfinity/asciibox/alignment_type"
+	"github.com/boundedinfinity/asciibox/comment_type"
+)
 
 var (
 	defaultWrapCharacter    = "*"
-	defaultCommentCharacter = CommentType_DoubleBackslash
-	defaultAlignment        = Alignment_Left
+	defaultCommentCharacter = comment_type.DoubleBackslash
+	defaultAlignment        = alignment_type.Left
 	defaultBoxWidth         = 80
 	defaultTopBottomPadding = 1
 	defaultLeftRightPadding = 1
@@ -15,11 +20,11 @@ var (
 type BoxOptions struct {
 	WrapCharacter    string
 	PaddingCharacter string
-	CommentCharater  CommentType
+	CommentCharater  comment_type.CommentType
 	BoxWidth         int
 	TopBottomPadding int
 	LeftRightPadding int
-	Alignment        Alignment
+	Alignment        alignment_type.Alignment
 }
 
 type boxContext struct {
@@ -54,11 +59,11 @@ func build(ctx boxContext) []string {
 		var s string
 
 		switch ctx.options.Alignment {
-		case Alignment_Left:
+		case alignment_type.Left:
 			s = s + m
 			p := ctx.options.BoxWidth - len(s)
 			s = s + strings.Repeat(ctx.options.PaddingCharacter, p)
-		case Alignment_Middle:
+		case alignment_type.Middle:
 			bm := ctx.options.BoxWidth / 2
 			tm := len(m) / 2
 			ts := bm - tm
@@ -66,7 +71,7 @@ func build(ctx boxContext) []string {
 			s = s + m
 			p := ctx.options.BoxWidth - len(s)
 			s = s + strings.Repeat(ctx.options.PaddingCharacter, p)
-		case Alignment_Right:
+		case alignment_type.Right:
 			ts := ctx.options.BoxWidth - len(m)
 			s = s + strings.Repeat(ctx.options.PaddingCharacter, ts)
 			s = s + m
